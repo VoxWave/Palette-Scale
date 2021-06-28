@@ -17,7 +17,7 @@
 use clap::App;
 use clap::Arg;
 use image::imageops::resize;
-use image::imageops::FilterType::Gaussian;
+use image::imageops::FilterType::Lanczos3;
 use image::io::Reader as ImageReader;
 use image::Rgba;
 use image::RgbaImage;
@@ -70,7 +70,7 @@ fn palette_scale(image: &RgbaImage, scale: u32) -> RgbaImage {
         image,
         image.width() * scale,
         image.height() * scale,
-        Gaussian,
+        Lanczos3,
     );
     for x in 0..resized.width() {
         for y in 0..resized.height() {
@@ -95,7 +95,6 @@ fn palette_scale(image: &RgbaImage, scale: u32) -> RgbaImage {
                 Some((index, _)) => index,
                 None => 1,
             };
-            index = 1;
             // Assign the new color randomly for this pixel from the closest colors
             resized.put_pixel(x, y, *color_distances[0..index].choose(&mut rng).unwrap().0);
         }
